@@ -266,8 +266,11 @@ function UpcomingMatchRow({ match }: { match: MatchSummary }) {
   return (
     <Link
       href={`/match/${match.fixture_id}`}
-      className="group grid min-h-[92px] w-full max-w-full grid-cols-[130px_96px_minmax(0,1fr)_190px_96px_20px] items-center gap-3 overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.06)] bg-[rgba(6,14,21,0.70)] px-3.5 py-4 transition-all duration-200 hover:-translate-y-px hover:border-[rgba(53,231,90,0.22)] hover:bg-[rgba(10,20,29,0.78)] max-[1120px]:grid-cols-[1fr_auto] max-[1120px]:gap-4"
+      className="group relative isolate grid min-h-[92px] w-full max-w-full grid-cols-[130px_96px_minmax(0,1fr)_190px_96px_20px] items-center gap-3 overflow-hidden rounded-[18px] border border-[rgba(255,255,255,0.06)] bg-[rgba(6,14,21,0.70)] px-3.5 py-4 transition-all duration-200 hover:-translate-y-px hover:border-[rgba(53,231,90,0.22)] max-[1120px]:grid-cols-[1fr_auto] max-[1120px]:gap-4"
     >
+      {/* Fond stade premium unifié — aligné avec MatchCard / MatchRow */}
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(3,8,10,0.78)_0%,rgba(3,8,10,0.94)_100%),url('/stadium-night.jpg')] bg-cover bg-center bg-no-repeat" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-16 bg-[radial-gradient(ellipse_at_top,rgba(53,231,90,0.07),transparent_70%)]" />
       <LeagueCell match={match} />
       <TimeCell match={match} />
       <MatchCell match={match} />

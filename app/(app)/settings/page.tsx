@@ -2,7 +2,7 @@ import { User, LogOut, Mail, Shield } from "lucide-react";
 import { createSupabaseServer } from "@/lib/supabase/server";
 import { PageHeader } from "@/components/layout/PageHeader";
 
-export const metadata = { title: "Paramètres — SIMBET" };
+export const metadata = { title: "Paramètres — Smart Sim" };
 
 export default async function SettingsPage() {
   const supabase = createSupabaseServer();

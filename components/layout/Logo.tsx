@@ -10,7 +10,7 @@ export function Logo({
   return (
     <img
       src="/smartsim-logo-final.png"
-      alt="SmartSim"
+      alt="Smart Sim"
       className={className ?? "h-auto w-[190px] object-contain"}
       style={className ? undefined : size ? { width: size } : undefined}
     />

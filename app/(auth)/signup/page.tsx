@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/layout/Logo";
 import { SignupForm } from "./signup-form";
 
-export const metadata = { title: "Inscription — SIMBET" };
+export const metadata = { title: "Inscription — Smart Sim" };
 
 export default function SignupPage() {
   return (

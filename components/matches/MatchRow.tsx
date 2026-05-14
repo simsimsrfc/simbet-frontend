@@ -50,8 +50,11 @@ export function MatchRow({ match: m }: { match: MatchSummary }) {
   return (
     <Link
       href={`/match/${m.fixture_id}`}
-      className="group grid h-[92px] grid-cols-[72px_minmax(360px,1fr)_260px_118px_30px] items-center gap-[14px] rounded-[22px] border border-[rgba(130,170,150,0.14)] bg-[rgba(10,18,24,0.70)] p-[12px_14px] shadow-[0_12px_32px_rgba(0,0,0,0.18)] transition-all duration-200 hover:-translate-y-px hover:border-brand/25 hover:bg-[rgba(10,18,24,0.84)] max-[1280px]:grid-cols-[72px_minmax(320px,1fr)_240px_110px_30px] max-[1100px]:h-auto max-[1100px]:grid-cols-[70px_minmax(0,1fr)_32px]"
+      className="group relative isolate grid h-[92px] grid-cols-[72px_minmax(360px,1fr)_260px_118px_30px] items-center gap-[14px] overflow-hidden rounded-[22px] border border-[rgba(130,170,150,0.14)] bg-[rgba(10,18,24,0.70)] p-[12px_14px] shadow-[0_12px_32px_rgba(0,0,0,0.18)] transition-all duration-200 hover:-translate-y-px hover:border-brand/25 max-[1280px]:grid-cols-[72px_minmax(320px,1fr)_240px_110px_30px] max-[1100px]:h-auto max-[1100px]:grid-cols-[70px_minmax(0,1fr)_32px]"
     >
+      {/* Fond stade premium unifié — même langage visuel que MatchCard (Real Madrid / FC Thun) */}
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(3,8,10,0.78)_0%,rgba(3,8,10,0.94)_100%),url('/stadium-night.jpg')] bg-cover bg-center bg-no-repeat" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-16 bg-[radial-gradient(ellipse_at_top,rgba(53,231,90,0.07),transparent_70%)]" />
       <TimeBadge date={m.date} />
       <div className="grid min-w-0 grid-cols-[minmax(140px,1fr)_34px_minmax(140px,1fr)] items-center gap-3 max-[1100px]:col-start-2">
         <TeamIdentity name={m.home_team.name} logo={m.home_team.logo} side="home" />

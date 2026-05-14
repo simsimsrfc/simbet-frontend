@@ -32,7 +32,7 @@ export function HomeHero({
           <h1 className="text-5xl font-extrabold leading-[0.93] tracking-[-0.06em] text-white md:text-6xl lg:text-[66px]">
             Bienvenue sur
             <br />
-            <span className="text-brand">SIMBET</span>
+            <span className="text-brand">Smart Sim</span>
           </h1>
           <p className="mt-3 max-w-[640px] text-lg leading-[1.48] text-[rgba(220,230,235,0.72)] md:text-[20px]">
             Retrouvez les meilleures analyses football du jour, propulsées par

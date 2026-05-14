@@ -12,7 +12,7 @@ type Props = {
 };
 
 export async function generateMetadata() {
-  return { title: "Fiche match — SIMBET" };
+  return { title: "Fiche match — Smart Sim" };
 }
 
 export default async function MatchDetailPage({ params, searchParams }: Props) {

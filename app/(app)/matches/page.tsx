@@ -8,7 +8,7 @@ import { CountryFlag } from "@/components/ui/CountryFlag";
 import { FavoriteButton } from "@/components/favorites/FavoriteButton";
 
 export const revalidate = 30;
-export const metadata = { title: "Tous les matchs — SIMBET" };
+export const metadata = { title: "Tous les matchs — Smart Sim" };
 
 type ResultSim = {
   code: "1" | "N" | "2";

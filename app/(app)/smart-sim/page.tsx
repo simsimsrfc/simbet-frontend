@@ -3,7 +3,7 @@ import type { MatchSummary } from "@/lib/types";
 import { SmartSimClient } from "./SmartSimClient";
 
 export const revalidate = 30;
-export const metadata = { title: "Smart Sim - SIMBET" };
+export const metadata = { title: "Smart Sim" };
 
 export default async function SmartSimPage() {
   let matches: MatchSummary[] = [];

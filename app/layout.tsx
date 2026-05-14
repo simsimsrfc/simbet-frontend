@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SIMBET — Analyses football",
+  title: "Smart Sim — Analyses football",
   description: "Plateforme d'analyses et probabilités de matchs de football.",
 };
 

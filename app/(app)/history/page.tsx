@@ -1,7 +1,7 @@
 import { HistoryClient } from "./HistoryClient";
 import { api, type HistoryApiItem } from "@/lib/api";
 
-export const metadata = { title: "Historique - SIMBET" };
+export const metadata = { title: "Historique — Smart Sim" };
 
 export default async function HistoryPage() {
   let items: HistoryApiItem[] = [];
