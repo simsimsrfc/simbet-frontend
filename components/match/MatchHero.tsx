@@ -28,7 +28,7 @@ export function MatchHero({
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_75%,rgba(53,231,90,0.12),transparent_34%)]" />
 
       <div className="flex h-full min-h-[190px] flex-col justify-between gap-3 p-4 md:p-5">
-        <div className="grid grid-cols-1 gap-2 text-sm font-bold text-[#F3F6F7] md:grid-cols-[1fr_auto_1fr] md:items-center">
+        <div className="grid grid-cols-1 gap-2 text-xs font-bold text-[#F3F6F7] sm:text-sm md:grid-cols-[1fr_auto_1fr] md:items-center">
           <div className="flex items-center gap-2 uppercase tracking-[0.08em]">
             <CountryFlag country={match.league.country} league={match.league.name} flag={match.league.flag} />
             {match.league.country && (
@@ -37,16 +37,16 @@ export function MatchHero({
                 <span className="text-white/35">•</span>
               </>
             )}
-            <span>{match.league.name || "Ligue"}</span>
+            <span className="truncate">{match.league.name || "Ligue"}</span>
           </div>
           <div className="flex items-center gap-2 text-[rgba(243,246,247,0.82)]">
-            <CalendarDays size={17} className="text-white/68" />
-            <span>{formatDate(match.date)} • {formatTime(match.date)}</span>
+            <CalendarDays size={15} className="text-white/68 shrink-0 sm:size-[17px]" />
+            <span className="truncate">{formatDate(match.date)} • {formatTime(match.date)}</span>
           </div>
           <div className="flex items-center gap-2 text-[rgba(243,246,247,0.82)] md:justify-end">
             {match.venue && (
               <>
-                <MapPin size={17} className="text-white/68" />
+                <MapPin size={15} className="text-white/68 shrink-0 sm:size-[17px]" />
                 <span className="truncate">{match.venue}</span>
               </>
             )}
@@ -55,16 +55,31 @@ export function MatchHero({
 
         <div className="grid grid-cols-[1fr_auto_1fr] items-end gap-3 md:gap-6">
           <HeroTeam team={match.home_team} align="right" />
-          <div className="flex min-w-[100px] flex-col items-center gap-1 pb-1 text-center">
-            <span className="rounded-full border border-[#35E75A]/40 bg-[#35E75A]/10 px-4 py-1 text-sm font-black text-[#35E75A]">
+          <div className="flex min-w-[80px] flex-col items-center gap-1 pb-1 text-center md:min-w-[100px]">
+            <span className="rounded-full border border-[#35E75A]/40 bg-[#35E75A]/10 px-3 py-1 text-xs font-black text-[#35E75A] sm:px-4 sm:text-sm">
               {isUpcoming(match) ? "À venir" : statusLabel(match)}
             </span>
-            <span className="text-xl font-black text-white/58">VS</span>
+            <span className="text-lg font-black text-white/58 sm:text-xl">VS</span>
           </div>
           <HeroTeam team={match.away_team} align="left" />
         </div>
+
+        {/*
+          Favorite button — ligne dédiée sous les équipes en mobile (évite tout
+          chevauchement avec les logos/noms). En desktop (≥md), repositionné
+          en absolute bottom-right pour conserver le rendu PC d'origine.
+        */}
+        <div className="mt-1 flex justify-center md:hidden">
+          <FavoriteButton
+            match={match}
+            source={favoriteContext.source}
+            tab={favoriteContext.tab}
+            analysisType={favoriteContext.analysisType}
+            variant="hero"
+          />
+        </div>
       </div>
-      <div className="absolute bottom-4 right-4 z-20">
+      <div className="absolute bottom-4 right-4 z-20 hidden md:block">
         <FavoriteButton
           match={match}
           source={favoriteContext.source}
