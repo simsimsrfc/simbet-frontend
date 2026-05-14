@@ -6,6 +6,7 @@ import type { MatchSummary } from "@/lib/types";
 import { over25DisplayProbability } from "@/lib/probabilities";
 import { CountryFlag } from "@/components/ui/CountryFlag";
 import { FavoriteButton } from "@/components/favorites/FavoriteButton";
+import { MatchCard } from "@/components/matches/MatchCard";
 
 export const revalidate = 30;
 export const metadata = { title: "Tous les matchs — Smart Sim" };
@@ -238,31 +239,56 @@ function MatchesTable({
   perPage: number;
 }) {
   return (
-    <section className="w-full max-w-full overflow-hidden rounded-[24px] border border-white/[0.08] bg-[rgba(7,16,24,0.82)] shadow-[0_18px_50px_rgba(0,0,0,0.26)]">
-      <div className="grid h-12 grid-cols-[minmax(150px,1.1fr)_72px_minmax(280px,1.6fr)_112px_86px_120px_52px] items-center gap-3 border-b border-white/[0.06] px-4 text-[11px] font-extrabold uppercase tracking-[0.10em] text-[rgba(243,246,247,0.48)]">
-        <span>Ligue</span>
-        <span>Heure</span>
-        <span>Match</span>
-        <span>Résultat Sim</span>
-        <span>+2,5 buts</span>
-        <span>Confiance</span>
-        <span className="text-center">Actions</span>
-      </div>
+    <>
+      {/*
+        Mobile (< lg) : grille de cartes premium MatchCard, une carte par match.
+        Toute la carte est cliquable vers /match/[fixture_id]. Plus de tableau
+        compressé qui cachait la deuxième équipe sur 390px.
+      */}
+      <section className="space-y-3 lg:hidden">
+        {matches.length > 0 ? (
+          matches.map((match) => (
+            <MatchCard
+              key={match.fixture_id}
+              match={match}
+              href={`/match/${match.fixture_id}?source=matches`}
+            />
+          ))
+        ) : (
+          <div className="rounded-[20px] border border-white/[0.08] bg-[rgba(7,16,24,0.72)] px-5 py-10 text-center text-sm font-medium text-[rgba(243,246,247,0.56)]">
+            Aucun match disponible aujourd'hui.
+          </div>
+        )}
+        <Pagination total={total} totalPages={totalPages} currentPage={currentPage} perPage={perPage} visibleCount={matches.length} />
+      </section>
 
-      {matches.length > 0 ? (
-        <div>
-          {matches.map((match) => (
-            <MatchTableRow key={match.fixture_id} match={match} />
-          ))}
+      {/* Desktop (≥ lg) : tableau historique préservé */}
+      <section className="hidden w-full max-w-full overflow-hidden rounded-[24px] border border-white/[0.08] bg-[rgba(7,16,24,0.82)] shadow-[0_18px_50px_rgba(0,0,0,0.26)] lg:block">
+        <div className="grid h-12 grid-cols-[minmax(150px,1.1fr)_72px_minmax(280px,1.6fr)_112px_86px_120px_52px] items-center gap-3 border-b border-white/[0.06] px-4 text-[11px] font-extrabold uppercase tracking-[0.10em] text-[rgba(243,246,247,0.48)]">
+          <span>Ligue</span>
+          <span>Heure</span>
+          <span>Match</span>
+          <span>Résultat Sim</span>
+          <span>+2,5 buts</span>
+          <span>Confiance</span>
+          <span className="text-center">Actions</span>
         </div>
-      ) : (
-        <div className="px-5 py-12 text-center text-sm font-medium text-[rgba(243,246,247,0.56)]">
-          Aucun match disponible aujourd'hui.
-        </div>
-      )}
 
-      <Pagination total={total} totalPages={totalPages} currentPage={currentPage} perPage={perPage} visibleCount={matches.length} />
-    </section>
+        {matches.length > 0 ? (
+          <div>
+            {matches.map((match) => (
+              <MatchTableRow key={match.fixture_id} match={match} />
+            ))}
+          </div>
+        ) : (
+          <div className="px-5 py-12 text-center text-sm font-medium text-[rgba(243,246,247,0.56)]">
+            Aucun match disponible aujourd'hui.
+          </div>
+        )}
+
+        <Pagination total={total} totalPages={totalPages} currentPage={currentPage} perPage={perPage} visibleCount={matches.length} />
+      </section>
+    </>
   );
 }
 
@@ -271,9 +297,19 @@ function MatchTableRow({ match }: { match: MatchSummary }) {
   const country = inferCountry(match);
 
   return (
-    <div className="grid min-h-[82px] grid-cols-[minmax(150px,1.1fr)_72px_minmax(280px,1.6fr)_112px_86px_120px_52px] items-center gap-3 border-b border-white/[0.06] px-4 transition-colors last:border-b-0 hover:bg-[rgba(53,231,90,0.04)]">
+    <div className="relative grid min-h-[82px] grid-cols-[minmax(150px,1.1fr)_72px_minmax(280px,1.6fr)_112px_86px_120px_52px] items-center gap-3 border-b border-white/[0.06] px-4 transition-colors last:border-b-0 hover:bg-[rgba(53,231,90,0.04)]">
+      {/*
+        Overlay clickable plein-cadre — toute la ligne ouvre /match/[fixture_id].
+        Les éléments interactifs (FavoriteButton, etc.) restent positionnés avec
+        `relative z-10` pour passer au-dessus.
+      */}
+      <Link
+        href={`/match/${match.fixture_id}?source=matches`}
+        aria-label={`${match.home_team.name} contre ${match.away_team.name}`}
+        className="absolute inset-0 z-0"
+      />
       <LeagueCell match={match} country={country} />
-      <div className="font-mono text-sm font-bold text-[#F3F6F7]">{formatTime(match.date)}</div>
+      <div className="relative z-[1] font-mono text-sm font-bold text-[#F3F6F7]">{formatTime(match.date)}</div>
       <MatchCell match={match} />
       <ResultCell result={result} />
       <Over25Cell value={over25DisplayProbability(match)} />
@@ -296,15 +332,15 @@ function LeagueCell({ match, country }: { match: MatchSummary; country: string }
 }
 
 function MatchCell({ match }: { match: MatchSummary }) {
+  // Plus de Link interne — le clic est géré par l'overlay plein-cadre au niveau
+  // de la ligne. On reste sur un simple <div> pour éviter les liens imbriqués
+  // (anti-pattern accessibilité + hydration warnings).
   return (
-    <Link
-      href={`/match/${match.fixture_id}?source=matches`}
-      className="grid min-w-0 grid-cols-[minmax(0,1fr)_28px_minmax(0,1fr)] items-center gap-2.5"
-    >
+    <div className="relative z-[1] grid min-w-0 grid-cols-[minmax(0,1fr)_28px_minmax(0,1fr)] items-center gap-2.5">
       <TeamSide name={match.home_team.name} logo={teamLogo(match, "home")} align="right" />
       <span className="text-center text-xs font-bold text-[rgba(243,246,247,0.46)]">VS</span>
       <TeamSide name={match.away_team.name} logo={teamLogo(match, "away")} align="left" />
-    </Link>
+    </div>
   );
 }
 
@@ -360,8 +396,9 @@ function ConfidenceCell({ value }: { value: number }) {
 }
 
 function ActionCell({ match }: { match: MatchSummary }) {
+  // relative z-10 pour passer au-dessus de l'overlay Link plein-cadre de la ligne.
   return (
-    <div className="flex justify-center">
+    <div className="relative z-10 flex justify-center">
       <FavoriteButton match={match} source="matches" tab="over25" analysisType="over25" />
     </div>
   );
