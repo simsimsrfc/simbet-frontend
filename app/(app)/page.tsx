@@ -13,6 +13,7 @@ import type { MatchSummary } from "@/lib/types";
 import { over25DisplayProbability } from "@/lib/probabilities";
 import { HomeHero } from "@/components/layout/HomeHero";
 import { HomeUpcomingMatches } from "@/components/matches/HomeUpcomingMatches";
+import { MatchCard } from "@/components/matches/MatchCard";
 
 export const revalidate = 30;
 
@@ -107,9 +108,20 @@ export default async function HomePage() {
           href="/smart-sim"
           cta="Voir tous les Smart Sim"
         >
+          {/*
+            Uniformisation : on utilise la MatchCard premium partout (même
+            composant qu'Accueil section principale + /smart-sim + /matches).
+            Le badge gold "Smart Sim" interne a été supprimé ; le halo
+            visuel gold reste via `variant="gold"`.
+          */}
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             {smart.slice(0, 3).map((match) => (
-              <HomeSmartCard key={match.fixture_id} match={match} />
+              <MatchCard
+                key={match.fixture_id}
+                match={match}
+                variant="gold"
+                href={`/match/${match.fixture_id}`}
+              />
             ))}
           </div>
         </HomeSection>
