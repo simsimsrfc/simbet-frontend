@@ -8,6 +8,7 @@ import {
 import type { MatchSummary } from "@/lib/types";
 import { over25DisplayProbability } from "@/lib/probabilities";
 import { CountryFlag } from "@/components/ui/CountryFlag";
+import { MatchCard } from "@/components/matches/MatchCard";
 
 type LooseRecord = Record<string, unknown>;
 
@@ -239,9 +240,20 @@ export function HomeUpcomingMatches({ matches }: { matches: MatchSummary[] }) {
         </Link>
       </div>
 
-      <div className="relative space-y-2.5">
+      {/*
+        Uniformisation : on utilise la MatchCard premium partout (même
+        composant que /smart-sim, /matches mobile, Accueil "Smart Sim du jour").
+        Plus de lignes horizontales avec noms tronqués "BSC Youn..." ou
+        recommandations "Away 40%" génériques — la MatchCard affiche les noms
+        complets sur 2 lignes au besoin et la recommandation = nom équipe.
+      */}
+      <div className="relative grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {upcoming.map((match) => (
-          <UpcomingMatchRow key={match.fixture_id} match={match} />
+          <MatchCard
+            key={match.fixture_id}
+            match={match}
+            href={`/match/${match.fixture_id}?source=matches`}
+          />
         ))}
       </div>
 
