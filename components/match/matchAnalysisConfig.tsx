@@ -43,7 +43,7 @@ export function getAnalysisViewConfig(view: MatchAnalysisView, match: MatchDetai
     const base = getAnalysisViewConfig("over25", match);
     return {
       ...base,
-      title: "Notre recommandation Smart Sim",
+      title: "Recommandation",
       badge: "Smart Sim +2,5",
       shortText: base.available
         ? "Smart Sim recommande +2,5 buts sur cette rencontre."
@@ -60,8 +60,8 @@ export function getAnalysisViewConfig(view: MatchAnalysisView, match: MatchDetai
     const selection = getResultSelectionPick(match);
     if (!selection) {
       return {
-        title: "Notre recommandation Smart Sim",
-        badge: "Avis résultat Smart Sim",
+        title: "Recommandation",
+        badge: "Avis résultat",
         primary: "—",
         subPrimary: "",
         probability: null,
@@ -173,8 +173,8 @@ export function getProbabilityItems(match: MatchDetail): ProbabilityItem[] {
   return [
     { key: "result", label: "Résultat probable", value: result?.value ?? null, helper: result?.code || "—" },
     { key: "over25", label: "+2,5 buts", value: safeProbability(over25DisplayProbability(match)), helper: "" },
-    { key: "over15", label: "+1,5 buts", value: safeProbability(match.probabilities.over_15), helper: "" },
-    { key: "btts", label: "L2M", value: safeProbability(match.probabilities.btts), helper: "" },
+    { key: "over15", label: "+1,5 buts", value: safeProbability(match?.probabilities?.over_15), helper: "" },
+    { key: "btts", label: "L2M", value: safeProbability(match?.probabilities?.btts), helper: "" },
   ];
 }
 
@@ -182,11 +182,11 @@ export function getResultPick(match: MatchDetail): ResultPick | null {
   const selection = getResultSelectionPick(match);
   if (selection) return selection;
 
-  const p = match.probabilities;
+  const p = match?.probabilities;
   const entries: ResultPick[] = [
-    { code: "1", label: "Victoire domicile", value: p.home_win },
-    { code: "N", label: "Match nul", value: p.draw },
-    { code: "2", label: "Victoire extérieur", value: p.away_win },
+    { code: "1", label: "Victoire domicile", value: p?.home_win as number },
+    { code: "N", label: "Match nul", value: p?.draw as number },
+    { code: "2", label: "Victoire extérieur", value: p?.away_win as number },
   ].filter((item): item is ResultPick => isRealProbability(item.value));
 
   if (match.predicted_winner && isRealProbability(match.winner_proba)) {

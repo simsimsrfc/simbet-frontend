@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, Trophy, ChevronRight } from "lucide-react";
+import { Trophy, ChevronRight } from "lucide-react";
 import type { MatchSummary } from "@/lib/types";
 import { over25DisplayProbability } from "@/lib/probabilities";
 
@@ -47,29 +47,25 @@ function getTeamInitials(name: string): string {
 export function MatchCard({
   match,
   variant = "default",
+  href,
 }: {
   match: MatchSummary;
   variant?: "default" | "gold";
+  href?: string;
 }) {
   const { home_team, away_team, league, probabilities, is_smart_bet, predicted_winner, winner_proba } = match;
   const isGold = variant === "gold" || is_smart_bet;
 
   return (
     <Link
-      href={`/match/${match.fixture_id}`}
+      href={href || `/match/${match.fixture_id}`}
       className="group relative block min-h-[342px] overflow-hidden rounded-[28px] border border-[rgba(130,170,150,0.16)] bg-[rgba(10,18,24,0.82)] shadow-[0_24px_70px_rgba(0,0,0,0.30)] transition-all duration-200 hover:-translate-y-1 hover:border-brand/25"
     >
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,8,10,0.70)_0%,rgba(3,8,10,0.94)_100%),url('/stadium-night.jpg')] bg-cover bg-center bg-no-repeat" />
       <div className={`absolute inset-x-0 top-0 h-32 pointer-events-none ${isGold ? "bg-[radial-gradient(ellipse_at_top,rgba(245,197,66,0.12),transparent_68%)]" : "bg-[radial-gradient(ellipse_at_top,rgba(53,231,90,0.08),transparent_68%)]"}`} />
 
-      {isGold && (
-        <div className="absolute right-4 top-4 z-10 inline-flex h-[34px] items-center gap-1 rounded-full bg-[#D8AC2F] px-3 text-[11px] font-black uppercase tracking-[0.08em] text-[#050B0E] shadow-[0_8px_22px_rgba(216,172,47,0.14)]">
-          <Sparkles size={10} strokeWidth={2.4} /> Smart Sim
-        </div>
-      )}
-
       <div className="relative p-5">
-        <div className="mb-7 flex items-center justify-between gap-3 pr-24">
+        <div className="mb-7 flex items-center justify-between gap-3">
           <span className="flex min-w-0 items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.14em] text-[rgba(200,210,215,0.55)]">
             {league.flag && <span className="text-base shrink-0">{league.flag}</span>}
             <span className="whitespace-normal">{league.name || "—"}</span>
@@ -95,19 +91,27 @@ export function MatchCard({
           <Stat label="BTTS" value={probabilities.btts} />
         </div>
 
-        <div className="flex items-center justify-between border-t border-white/[0.06] pt-4">
+        {/*
+          Footer recommandation — utile uniquement (pas de badge "Smart Sim").
+          Pour résultat : nom de l'équipe gagnante / "Match nul".
+        */}
+        <div className="flex items-center justify-between gap-2 border-t border-white/[0.06] pt-4">
           {predicted_winner ? (
-          <span className="inline-flex min-w-0 items-center gap-1.5 text-xs">
-            <Trophy size={12} className="shrink-0 text-[#D8AF3A]" />
-              <span className="font-bold text-fg">
-                {predicted_winner === "home" ? "Home" : predicted_winner === "away" ? "Away" : "Draw"}
+            <span className="inline-flex min-w-0 items-center gap-1.5 text-xs">
+              <Trophy size={12} className="shrink-0 text-[#D8AF3A]" />
+              <span className="truncate font-bold text-fg">
+                {predicted_winner === "home"
+                  ? home_team.name
+                  : predicted_winner === "away"
+                  ? away_team.name
+                  : "Match nul"}
               </span>
-              <span className="text-fg-muted font-semibold">{Math.round(winner_proba * 100)}%</span>
+              <span className="shrink-0 font-semibold text-fg-muted">{Math.round(winner_proba * 100)}%</span>
             </span>
           ) : (
             <span className="text-xs text-fg-muted">—</span>
           )}
-          <ChevronRight size={16} className="text-fg/40 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-fg/70" />
+          <ChevronRight size={16} className="shrink-0 text-fg/40 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-fg/70" />
         </div>
       </div>
     </Link>

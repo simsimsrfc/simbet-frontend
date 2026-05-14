@@ -25,8 +25,8 @@ export function MatchContextCard({ match }: { match: MatchDetail }) {
   if (!contexts.length || (contexts.length === 1 && contexts[0].title === "Stade")) return null;
 
   return (
-    <section className="rounded-3xl border border-white/[0.08] bg-[rgba(7,16,24,0.82)] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.28)] xl:col-span-2">
-      <h2 className="mb-3 text-lg font-black tracking-[-0.02em] text-[#F3F6F7]">Contexte du match</h2>
+    <section className="rounded-2xl border border-white/[0.06] bg-[rgba(7,16,24,0.82)] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.28)] sm:rounded-3xl sm:p-5 lg:p-6 xl:col-span-2">
+      <h2 className="mb-3 text-base font-black tracking-[-0.02em] text-[#F3F6F7] sm:text-lg lg:text-xl">Contexte du match</h2>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
         {contexts.map((item) => (
           <div key={item.title} className="flex min-w-0 items-center gap-3 rounded-2xl border border-white/[0.06] bg-white/[0.035] p-3">

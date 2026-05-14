@@ -398,22 +398,21 @@ function StatBox({ label, value }: { label: string; value: number }) {
 }
 
 function SignalCell({ match }: { match: MatchSummary }) {
-  if (match.is_smart_bet) {
-    return (
-      <div className="flex min-w-0 items-center justify-end overflow-hidden max-[1120px]:col-span-2 max-[1120px]:justify-start">
-        <span className="inline-flex h-10 w-24 max-w-24 items-center justify-center gap-1 rounded-xl border border-[rgba(245,197,66,0.35)] bg-[rgba(245,197,66,0.12)] px-2 text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#F5C542]">
-          Smart Sim
-        </span>
-      </div>
-    );
-  }
+  // Pas de badge "Smart Sim" : on affiche systématiquement la recommandation utile.
+  // Pour un match Smart Sim, la teinte gold conserve l'emphase visuelle premium.
+  const isSmart = match.is_smart_bet;
+  const wrapper = isSmart
+    ? "inline-flex h-[40px] max-w-[130px] items-center justify-center gap-1.5 rounded-xl border border-[rgba(245,197,66,0.35)] bg-[rgba(245,197,66,0.12)] px-2.5 text-xs font-bold text-[#F5C542]"
+    : "inline-flex h-[40px] max-w-[96px] items-center justify-center gap-1.5 rounded-xl border border-[rgba(120,170,150,0.14)] bg-white/[0.028] px-2.5 text-xs font-bold text-[rgba(243,246,247,0.72)]";
+  const trophyClass = isSmart ? "text-[#F5C542]" : "text-[#35E75A]/80";
+  const probClass = isSmart ? "text-[#F5C542]" : "text-[#35E75A]";
 
   return (
     <div className="flex min-w-0 items-center justify-end overflow-hidden max-[1120px]:col-span-2 max-[1120px]:justify-start">
-      <span className="inline-flex h-[40px] max-w-[96px] items-center justify-center gap-1.5 rounded-xl border border-[rgba(120,170,150,0.14)] bg-white/[0.028] px-2.5 text-xs font-bold text-[rgba(243,246,247,0.72)]">
-        <Trophy size={13} className="text-[#35E75A]/80" />
-        {getWinnerLabel(match)}
-        <span className="text-[#35E75A]">{Math.round(match.winner_proba * 100)}%</span>
+      <span className={wrapper}>
+        <Trophy size={13} className={`shrink-0 ${trophyClass}`} />
+        <span className="truncate">{getWinnerLabel(match)}</span>
+        <span className={`shrink-0 ${probClass}`}>{Math.round(match.winner_proba * 100)}%</span>
       </span>
     </div>
   );

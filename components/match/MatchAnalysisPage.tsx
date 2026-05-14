@@ -29,7 +29,7 @@ export function MatchAnalysisPage({
   const probabilityItems = getProbabilityItems(match);
 
   return (
-    <div className="mx-auto flex w-full max-w-[1460px] flex-col gap-3 overflow-x-hidden">
+    <div className="mx-auto flex w-full max-w-[1460px] flex-col gap-3 overflow-x-hidden sm:gap-4">
       <BackButton />
       <MatchHero match={match} source={source} activeTab={activeView} />
       <MatchAnalysisTabs fixtureId={fixtureId} source={source} tabs={tabs} activeTab={activeView} />

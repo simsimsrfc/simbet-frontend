@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, ChevronRight, Sparkles, Trophy } from "lucide-react";
+import { Clock, ChevronRight, Trophy } from "lucide-react";
 import type { MatchSummary } from "@/lib/types";
 import { over25DisplayProbability } from "@/lib/probabilities";
 import { StatPill } from "@/components/ui/StatPill";
@@ -146,21 +146,21 @@ function SignalBadge({
   winnerLabel: string | null;
   winnerProba: number;
 }) {
-  if (isSmart) {
-    return (
-      <span className="flex h-8 min-w-[104px] items-center justify-center gap-1.5 rounded-full bg-[#D8AC2F] px-3 text-[10px] font-black uppercase tracking-[0.08em] text-[#050B0E] shadow-[0_8px_22px_rgba(216,172,47,0.14)]">
-        <Sparkles size={12} strokeWidth={2.5} /> Smart Sim
-      </span>
-    );
+  // Plus de badge "Smart Sim" : on garde uniquement la recommandation utile.
+  // Pour un match Smart Sim, on conserve la teinte gold pour l'emphase visuelle.
+  if (!winnerLabel) {
+    return <span className="text-xs font-bold text-fg-muted">Analyse</span>;
   }
 
-  if (!winnerLabel) return <span className="text-xs font-bold text-fg-muted">Analyse</span>;
+  const wrapperClass = isSmart
+    ? "flex h-8 max-w-[140px] items-center justify-center gap-1.5 overflow-hidden whitespace-nowrap rounded-full border border-[#D8AC2F]/40 bg-[rgba(216,172,47,0.14)] px-2.5 text-xs font-bold text-[#F5C542]"
+    : "flex h-8 max-w-[116px] items-center justify-center gap-1.5 overflow-hidden whitespace-nowrap rounded-full border border-[rgba(130,170,150,0.14)] bg-white/[0.028] px-2.5 text-xs font-bold text-fg/80";
 
   return (
-    <span className="flex h-8 max-w-[116px] items-center justify-center gap-1.5 overflow-hidden whitespace-nowrap rounded-full border border-[rgba(130,170,150,0.14)] bg-white/[0.028] px-2.5 text-xs font-bold text-fg/80">
-      <Trophy size={12} className="shrink-0 text-brand/80" />
-      <span className="text-fg">{winnerLabel}</span>
-      <span className="text-brand">{Math.round(winnerProba * 100)}%</span>
+    <span className={wrapperClass}>
+      <Trophy size={12} className={`shrink-0 ${isSmart ? "text-[#F5C542]" : "text-brand/80"}`} />
+      <span className={`truncate ${isSmart ? "text-[#F5C542]" : "text-fg"}`}>{winnerLabel}</span>
+      <span className={isSmart ? "text-[#F5C542]" : "text-brand"}>{Math.round(winnerProba * 100)}%</span>
     </span>
   );
 }

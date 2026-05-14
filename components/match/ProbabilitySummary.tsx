@@ -6,16 +6,16 @@ export function ProbabilitySummary({ items, activeTab }: { items: ProbabilityIte
     activeTab === "recommendation-over25" ? "over25" : activeTab === "recommendation-result" ? "result" : activeTab;
 
   return (
-    <section className="rounded-3xl border border-white/[0.08] bg-[rgba(7,16,24,0.82)] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.28)]">
-      <h2 className="mb-3 text-lg font-black tracking-[-0.02em] text-[#F3F6F7]">Résumé des probabilités</h2>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    <section className="rounded-2xl border border-white/[0.06] bg-[rgba(7,16,24,0.82)] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.28)] sm:rounded-3xl sm:p-5 lg:p-6">
+      <h2 className="mb-3 text-base font-black tracking-[-0.02em] text-[#F3F6F7] sm:text-lg lg:text-xl">Résumé des probabilités</h2>
+      <div className="grid grid-cols-2 gap-2.5 sm:gap-3 xl:grid-cols-4">
         {items.map((item) => (
           <div
             key={item.key}
-            className={`min-h-[92px] rounded-2xl border p-3 ${
+            className={`min-h-[84px] rounded-2xl border p-3 sm:min-h-[92px] ${
               item.key === highlightedTab
-                ? "border-[#35E75A]/70 bg-[#35E75A]/10"
-                : "border-white/[0.08] bg-white/[0.035]"
+                ? "border-[#35E75A]/60 bg-[#35E75A]/10"
+                : "border-white/[0.06] bg-white/[0.035]"
             }`}
           >
             <div className="text-xs font-black text-[#F3F6F7]">{item.label}</div>
