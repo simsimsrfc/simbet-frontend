@@ -8,6 +8,7 @@ import { WhyAnalysisCard } from "./WhyAnalysisCard";
 import { ProbabilitySummary } from "./ProbabilitySummary";
 import { MatchContextCard } from "./MatchContextCard";
 import { NarrativeSummaryCard } from "./NarrativeSummaryCard";
+import { SmartSummaryCard } from "./SmartSummaryCard";
 import { MatchDisclaimer } from "./MatchDisclaimer";
 import { getAnalysisViewConfig, getMatchAnalysisTabs, getProbabilityItems } from "./matchAnalysisConfig";
 import type { MatchAnalysisSource, MatchAnalysisView } from "./types";
@@ -33,6 +34,8 @@ export function MatchAnalysisPage({
       <BackButton />
       <MatchHero match={match} source={source} activeTab={activeView} />
       <MatchAnalysisTabs fixtureId={fixtureId} source={source} tabs={tabs} activeTab={activeView} />
+      {/* Phase 2 — Smart summary (fallback-safe, ne rend rien si insights absent) */}
+      <SmartSummaryCard insights={match.insights} />
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-[minmax(0,1.15fr)_minmax(340px,1fr)]">
         <div className="flex min-w-0 flex-col gap-3">
           <PrimaryAnalysisCard data={viewConfig} />

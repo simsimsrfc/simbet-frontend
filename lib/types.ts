@@ -17,6 +17,9 @@ export type MatchSummary = {
     over_25_display?: number | null;
     over_25_confidence_label?: string;
     over_15: number;
+    over_15_legacy?: number | null;       // valeur historique (Poisson)
+    over_15_candidate?: number | null;    // proba modèle candidate (peut être null)
+    over_15_source?: "candidate" | "legacy"; // origine de over_15 affiché
     btts: number;
     home_win: number;
     draw: number;
@@ -45,6 +48,46 @@ export type MatchSummary = {
   odds: { over_25: number | null; over_15: number | null; btts: number | null };
 };
 
+// Phase 2 — Insights enrichis par marché (optional, fallback-safe côté backend)
+export type ConfidenceTier = "absent" | "prudent" | "moyen" | "fort";
+
+export type MarketInsight = {
+  probability: number | null;
+  confidence_tier: ConfidenceTier;
+  headline: string;
+  warning?: string | null;
+  explanations: string[];
+  value?: { implied_prob: number; model_prob: number; edge: number; has_value: boolean } | null;
+  market_strength_score: number;
+  source?: "candidate" | "legacy";
+};
+
+export type WinnerInsight = {
+  pick: "home" | "draw" | "away" | null;
+  pick_label: string | null;
+  probabilities: { home: number | null; draw: number | null; away: number | null };
+  confidence_tier: ConfidenceTier;
+  match_type: "favori_clair" | "favori_leger" | "match_ouvert" | "risque_nul" | "balanced" | null;
+  headline: string;
+  warning?: string | null;
+  explanations: string[];
+  market_strength_score: number;
+};
+
+export type MatchInsights = {
+  summary: {
+    best_market: "over_15" | "over_25" | "btts" | "winner" | null;
+    risk_level: "faible" | "moyen" | "élevé";
+    match_profile: string;
+    smart_summary: string;
+  };
+  over25: MarketInsight;
+  over15: MarketInsight;
+  btts: MarketInsight;
+  l2m: { is_strong_pick: boolean; probability: number | null; headline: string };
+  result: WinnerInsight;
+};
+
 export type MatchDetail = MatchSummary & {
   form: { home: string[]; away: string[] };
   h2h: Array<{
@@ -55,4 +98,5 @@ export type MatchDetail = MatchSummary & {
     winner_id: number | null;
   }>;
   analysis: { commentary: string; model: { xgb: number; lgb: number } };
+  insights?: MatchInsights | null;   // Phase 2, fallback-safe
 };
