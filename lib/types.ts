@@ -88,6 +88,24 @@ export type MatchInsights = {
   result: WinnerInsight;
 };
 
+// Phase 3 — Lecture contextuelle humanisée (fallback-safe)
+export type ContextFlag = {
+  active: boolean;
+  evidence: string;
+  confidence: number;
+};
+
+export type MatchContext = {
+  flags: Record<string, ContextFlag>;
+  score: {
+    score: number;
+    risk_level: "LOW" | "MED" | "HIGH" | string;
+    data_completeness: number;
+    active_count: number;
+  };
+  narrative_lines: string[];
+};
+
 export type MatchDetail = MatchSummary & {
   form: { home: string[]; away: string[] };
   h2h: Array<{
@@ -99,4 +117,5 @@ export type MatchDetail = MatchSummary & {
   }>;
   analysis: { commentary: string; model: { xgb: number; lgb: number } };
   insights?: MatchInsights | null;   // Phase 2, fallback-safe
+  context?: MatchContext | null;     // Phase 3, fallback-safe
 };
